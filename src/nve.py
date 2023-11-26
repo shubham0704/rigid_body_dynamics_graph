@@ -4,7 +4,7 @@ from typing import Callable, Tuple, TypeVar, Union
 import jax.numpy as jnp
 from jax import random
 from jax_md import dataclasses, interpolate, quantity, simulate, space, util
-from utils import  canonicalize_mass
+from .utils import  canonicalize_mass
 
 static_cast = util.static_cast
 # Types
