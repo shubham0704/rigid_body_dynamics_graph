@@ -9,6 +9,31 @@ from jax import grad, jit, random, vmap
 from jax_md import smap
 
 from . import lnn, models
+from typing import TypeVar, Callable, Union, Tuple, Optional, Any
+from jax_md import util
+
+Array = util.Array
+f32 = util.f32
+f64 = util.f64
+
+
+def canonicalize_mass(mass: Union[float, Array]) -> Union[float, Array]:
+  if isinstance(mass, float):
+    return mass
+  elif isinstance(mass, jnp.ndarray):
+    if len(mass.shape) == 2 and mass.shape[1] == 1:
+      return mass
+    elif len(mass.shape) == 1:
+      return jnp.reshape(mass, (mass.shape[0], 1))
+    elif len(mass.shape) == 0:
+      return mass
+  elif isinstance(mass, f32) or isinstance(mass, f64):
+    return mass
+  msg = (
+      'Expected mass to be either a floating point number or a one-dimensional'
+      'ndarray. Found {}.'.format(mass)
+      )
+  raise ValueError(msg)
 
 
 def colnum(i, j, N):
