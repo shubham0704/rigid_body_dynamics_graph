@@ -3,7 +3,7 @@ from functools import partial
 import jax
 import jax.numpy as jnp
 from jax import jit, lax, value_and_grad
-from jax.experimental import optimizers
+from jax.example_libraries import optimizers
 
 from .nve import nve
 
