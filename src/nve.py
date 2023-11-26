@@ -4,6 +4,7 @@ from typing import Callable, Tuple, TypeVar, Union
 import jax.numpy as jnp
 from jax import random
 from jax_md import dataclasses, interpolate, quantity, simulate, space, util
+from utils import  canonicalize_mass
 
 static_cast = util.static_cast
 # Types
@@ -16,6 +17,7 @@ InitFn = Callable[..., T]
 ApplyFn = Callable[[T], T]
 Simulator = Tuple[InitFn, ApplyFn]
 Schedule = Union[Callable[..., float], float]
+
 
 
 @dataclasses.dataclass
@@ -100,7 +102,7 @@ def nve(energy_or_force_fn: Callable[..., Array],
                  V: Array,
                  mass=f32(1.0),
                  **kwargs) -> NVEState:
-        mass = quantity.canonicalize_mass(mass)
+        mass = canonicalize_mass(mass)
         return NVEState(R, V, force_fn(R, V, **kwargs), mass, 0.0)
 
     def apply_fun(state: NVEState, **kwargs) -> NVEState:
